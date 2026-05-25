@@ -21,3 +21,19 @@
   height: 36px;
   width: auto;
 }
+
+@media (max-width: 600px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    margin-bottom: 1.25rem;
+  }
+
+  .titleIcon {
+    height: 26px;
+  }
+}

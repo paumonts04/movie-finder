@@ -94,11 +94,25 @@ export default function MovieList({ initialMovies, genres, initialQuery = '' }) 
         <button onClick={() => { setQuery(''); filterByGenre(''); }} className={styles.btnSecondary}>Ver populares</button>
       </div>
 
+      <div className={styles.genreChips}>
+        <button
+          onClick={() => filterByGenre('')}
+          className={selectedGenre === '' ? styles.chipActive : styles.chip}
+        >
+          Todos
+        </button>
+        {genres.map(g => (
+          <button
+            key={g.id}
+            onClick={() => filterByGenre(String(g.id))}
+            className={selectedGenre === String(g.id) ? styles.chipActive : styles.chip}
+          >
+            {g.name}
+          </button>
+        ))}
+      </div>
+
       <div className={styles.controls}>
-        <select value={selectedGenre} onChange={e => filterByGenre(e.target.value)} className={styles.select}>
-          <option value="">Todos los géneros</option>
-          {genres.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
-        </select>
         <select value={sortBy} onChange={e => setSortBy(e.target.value)} className={styles.select}>
           <option value="popularity">Más populares</option>
           <option value="rating">Mejor puntuación</option>
