@@ -1,0 +1,20 @@
+.footer {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-top: 1px solid #222;
+  color: #aaa;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.link {
+  color: #e50914;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

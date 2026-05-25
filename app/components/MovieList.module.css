@@ -1,0 +1,156 @@
+.searchBox {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  width: 300px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  background-color: #222;
+  color: #fff;
+}
+
+.select {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  background-color: #222;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btnPrimary {
+  padding: 0.75rem 1.5rem;
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btnPrimary:hover {
+  background-color: #b20710;
+}
+
+.btnSecondary {
+  padding: 0.75rem 1.5rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btnSecondary:hover {
+  background-color: #444;
+}
+
+.btnDisabled {
+  padding: 0.75rem 1.5rem;
+  background-color: #333;
+  color: #aaa;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: not-allowed;
+}
+
+.mensaje {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card {
+  background-color: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.cardBody {
+  padding: 0.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardTitle {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardInfo {
+  font-size: 0.8rem;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.starIcon {
+  height: 12px;
+  width: auto;
+}
+
+.loadMoreBox {
+  text-align: center;
+  margin: 2rem 0;
+}

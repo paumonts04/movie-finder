@@ -1,0 +1,134 @@
+.main {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.back {
+  color: #aaa;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.back:hover {
+  color: #fff;
+}
+
+.detail {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.poster {
+  width: 250px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info h1 {
+  font-size: 2rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.meta {
+  color: #aaa;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.metaIcon {
+  height: 15px;
+  width: auto;
+}
+
+.trailerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.6rem 1.2rem;
+  background-color: #e50914;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  align-self: flex-start;
+  transition: background-color 0.2s ease;
+}
+
+.trailerBtn:hover {
+  background-color: #b20710;
+}
+
+.trailerBtn:visited {
+  color: #fff;
+}
+
+.trailerIcon {
+  height: 18px;
+  width: auto;
+}
+
+.overview {
+  line-height: 1.7;
+  color: #ccc;
+}
+
+.genres {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.genre {
+  background-color: #333;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.similar h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+  transition: transform 0.2s;
+}
+
+.card img:hover {
+  transform: scale(1.05);
+}
+
+.card p {
+  font-size: 0.85rem;
+  margin-top: 6px;
+  color: #ccc;
+}
