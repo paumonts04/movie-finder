@@ -1,18 +1,23 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './Navbar.module.css';
 import { useGenreContext } from '../context/GenreContext';
 
 export default function Navbar() {
-  const [visible, setVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { genres, selectedGenre, setSelectedGenre } = useGenreContext();
   const dropdownRef = useRef(null);
+  const pathname = usePathname();
+
+  const isMoviePage = pathname.startsWith('/pelicula/');
+  const visible = isMoviePage || scrolled;
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 180);
+    const onScroll = () => setScrolled(window.scrollY > 180);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);

@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import MovieList from './components/MovieList';
+import Footer from './components/Footer';
 import styles from './page.module.css';
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -31,6 +31,7 @@ export default async function Home({ searchParams }) {
         Buscador de Películas
       </h1>
       <MovieList initialMovies={movies} genres={genres} initialQuery={q} />
+      <Footer />
     </main>
   );
 }

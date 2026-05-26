@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Footer from '../../components/Footer';
 import styles from './page.module.css';
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -36,6 +37,7 @@ export default async function PeliculaPage({ params }) {
     : 'https://via.placeholder.com/200x300?text=Sin+imagen';
 
   return (
+    <>
     <main className={styles.main}>
       <Link href="/" className={styles.back}>← Volver</Link>
 
@@ -82,5 +84,7 @@ export default async function PeliculaPage({ params }) {
         </div>
       )}
     </main>
+    <Footer />
+    </>
   );
 }
