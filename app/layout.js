@@ -1,6 +1,7 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { GenreProvider } from "./context/GenreContext";
 
 export const metadata = {
   title: "Buscador de Películas",
@@ -11,9 +12,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body>
-        <Navbar />
-        {children}
-        <Footer />
+        <GenreProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </GenreProvider>
       </body>
     </html>
   );

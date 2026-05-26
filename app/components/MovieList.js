@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from './MovieList.module.css';
+import { useGenreContext } from '../context/GenreContext';
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -14,9 +15,9 @@ function dedup(arr) {
 }
 
 export default function MovieList({ initialMovies, genres, initialQuery = '' }) {
+  const { selectedGenre, setSelectedGenre } = useGenreContext();
   const [movies, setMovies] = useState(() => dedup(initialMovies));
   const [query, setQuery] = useState(initialQuery);
-  const [selectedGenre, setSelectedGenre] = useState('');
   const [sortBy, setSortBy] = useState('popularity');
   const [mensaje, setMensaje] = useState('');
   const [loading, setLoading] = useState(false);
@@ -31,6 +32,22 @@ export default function MovieList({ initialMovies, genres, initialQuery = '' }) 
   useEffect(() => {
     if (initialQuery) performSearch(initialQuery);
   }, []);
+
+  // React to genre changes from Navbar or local chips
+  useEffect(() => {
+    genreRef.current = selectedGenre;
+    queryRef.current = '';
+    pageRef.current = 1;
+    setNoMore(false);
+    autoFilling.current = false;
+    setMensaje('Cargando...');
+    const endpoint = selectedGenre
+      ? `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=es-ES&with_genres=${selectedGenre}&sort_by=popularity.desc&page=1`
+      : `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES&page=1`;
+    fetch(endpoint)
+      .then(r => r.json())
+      .then(d => { setMovies(dedup(d.results || [])); setMensaje(''); });
+  }, [selectedGenre]);
 
   // Detect column count
   useEffect(() => {
@@ -104,21 +121,8 @@ export default function MovieList({ initialMovies, genres, initialQuery = '' }) 
     await performSearch(query);
   }
 
-  async function filterByGenre(genreId) {
-    genreRef.current = genreId;
-    queryRef.current = '';
+  function filterByGenre(genreId) {
     setSelectedGenre(genreId);
-    pageRef.current = 1;
-    setNoMore(false);
-    autoFilling.current = false;
-    setMensaje('Cargando...');
-    const endpoint = genreId
-      ? `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=es-ES&with_genres=${genreId}&sort_by=popularity.desc&page=1`
-      : `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES&page=1`;
-    const res = await fetch(endpoint);
-    const data = await res.json();
-    setMovies(dedup(data.results || []));
-    setMensaje('');
   }
 
   async function loadMore() {
