@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 Movie Finder
 
-## Getting Started
+Aplicación web para descubrir y explorar películas usando la API de TMDB. Construida con Next.js 15 y desplegada en Vercel.
 
-First, run the development server:
+🔗 **Demo en vivo:** [movie-finder-farra.vercel.app](https://movie-finder-farra.vercel.app)
 
-```bash
+---
+
+## Capturas de pantalla
+
+<!-- Añade aquí capturas de pantalla de la app -->
+
+---
+
+## Tecnologías
+
+- [Next.js 15](https://nextjs.org/) — framework fullstack con App Router
+- [React 19](https://react.dev/) — librería de interfaces de usuario
+- [TMDB API](https://www.themoviedb.org/) — datos de películas
+- CSS Modules — estilos con alcance local
+- [Vercel](https://vercel.com/) — deploy y hosting
+
+---
+
+## Funcionalidades
+
+- Listado de películas populares
+- Buscador por título
+- Filtrado por género
+- Ordenación por popularidad, puntuación o año
+- Paginación con "Ver más"
+- Página de detalle con sinopsis, duración y géneros
+- Enlace al trailer en YouTube
+- Películas similares en la página de detalle
+- Navbar y footer en todas las páginas
+
+---
+
+## Ejecutar en local
+
+### Requisitos
+
+- Node.js 18 o superior
+- Cuenta en [TMDB](https://www.themoviedb.org/) para obtener una API key gratuita
+
+### Pasos
+
+1. Clona el repositorio:
+
+\```bash
+git clone https://github.com/tu-usuario/movie-finder.git
+cd movie-finder
+\```
+
+2. Instala las dependencias:
+
+\```bash
+npm install
+\```
+
+3. Crea el archivo `.env.local` en la raíz del proyecto:
+
+\```
+NEXT_PUBLIC_TMDB_API_KEY=tu_api_key
+\```
+
+4. Arranca el servidor de desarrollo:
+
+\```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estructura del proyecto
 
-## Learn More
+\```
+app/
+├── components/
+│   ├── Navbar.js
+│   ├── Navbar.module.css
+│   ├── MovieList.js
+│   ├── MovieList.module.css
+│   ├── Footer.js
+│   └── Footer.module.css
+├── pelicula/
+│   └── [id]/
+│       ├── page.js
+│       └── page.module.css
+├── page.js
+├── layout.js
+└── globals.css
+\```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Autor
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Pau — [GitHub](https://github.com/tu-usuario) · [LinkedIn](https://linkedin.com/in/tu-usuario)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Datos proporcionados por [TMDB](https://www.themoviedb.org/). Iconos por varios autores vía [icon-icons.com](https://icon-icons.com) — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)*

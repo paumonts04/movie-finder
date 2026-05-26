@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from './MovieList.module.css';
 
@@ -8,25 +8,94 @@ const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
+function dedup(arr) {
+  const seen = new Set();
+  return arr.filter(m => seen.has(m.id) ? false : seen.add(m.id));
+}
+
 export default function MovieList({ initialMovies, genres, initialQuery = '' }) {
-  const [movies, setMovies] = useState(initialMovies);
+  const [movies, setMovies] = useState(() => dedup(initialMovies));
   const [query, setQuery] = useState(initialQuery);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [sortBy, setSortBy] = useState('popularity');
   const [mensaje, setMensaje] = useState('');
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [noMore, setNoMore] = useState(false);
+  const [cols, setCols] = useState(8);
+  const gridRef = useRef(null);
+  const autoFilling = useRef(false);
+  const pageRef = useRef(1);
+  const queryRef = useRef('');
+  const genreRef = useRef('');
 
   useEffect(() => {
     if (initialQuery) performSearch(initialQuery);
   }, []);
 
+  // Detect column count
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const updateCols = () => {
+      const count = getComputedStyle(grid).gridTemplateColumns.trim().split(/\s+/).length;
+      setCols(count);
+    };
+    updateCols();
+    const observer = new ResizeObserver(updateCols);
+    observer.observe(grid);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-fill last row with real movies
+  useEffect(() => {
+    if (cols < 2 || movies.length === 0 || loading || noMore) return;
+    if (movies.length % cols === 0) {
+      autoFilling.current = false;
+      return;
+    }
+    if (autoFilling.current) return;
+    autoFilling.current = true;
+    fetchNextPage();
+  }, [cols, movies.length, loading, noMore]);
+
+  async function buildUrl(p) {
+    if (queryRef.current.trim()) {
+      return `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(queryRef.current)}&language=es-ES&page=${p}`;
+    }
+    if (genreRef.current) {
+      return `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=es-ES&with_genres=${genreRef.current}&sort_by=popularity.desc&page=${p}`;
+    }
+    return `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES&page=${p}`;
+  }
+
+  async function fetchNextPage() {
+    const nextPage = pageRef.current + 1;
+    const url = await buildUrl(nextPage);
+    const res = await fetch(url);
+    const data = await res.json();
+    const results = data.results || [];
+    if (results.length === 0) {
+      setNoMore(true);
+      autoFilling.current = false;
+      return;
+    }
+    pageRef.current = nextPage;
+    setMovies(prev => {
+      const existingIds = new Set(prev.map(m => m.id));
+      return dedup([...prev, ...results.filter(m => !existingIds.has(m.id))]);
+    });
+  }
+
   async function performSearch(q) {
+    queryRef.current = q;
+    genreRef.current = '';
     setMensaje('Buscando...');
-    setPage(1);
+    pageRef.current = 1;
+    setNoMore(false);
+    autoFilling.current = false;
     const res = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(q)}&language=es-ES&page=1`);
     const data = await res.json();
-    setMovies(data.results || []);
+    setMovies(dedup(data.results || []));
     setMensaje(data.results?.length === 0 ? 'No se encontraron películas.' : '');
   }
 
@@ -36,40 +105,36 @@ export default function MovieList({ initialMovies, genres, initialQuery = '' }) 
   }
 
   async function filterByGenre(genreId) {
+    genreRef.current = genreId;
+    queryRef.current = '';
     setSelectedGenre(genreId);
-    setPage(1);
-    if (!genreId) {
-      setMensaje('Cargando...');
-      const res = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES&page=1`);
-      const data = await res.json();
-      setMovies(data.results || []);
-      setMensaje('');
-      return;
-    }
+    pageRef.current = 1;
+    setNoMore(false);
+    autoFilling.current = false;
     setMensaje('Cargando...');
-    const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&language=es-ES&with_genres=${genreId}&sort_by=popularity.desc&page=1`);
+    const endpoint = genreId
+      ? `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=es-ES&with_genres=${genreId}&sort_by=popularity.desc&page=1`
+      : `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES&page=1`;
+    const res = await fetch(endpoint);
     const data = await res.json();
-    setMovies(data.results || []);
+    setMovies(dedup(data.results || []));
     setMensaje('');
   }
 
   async function loadMore() {
-    const nextPage = page + 1;
+    if (loading || noMore) return;
     setLoading(true);
-
-    let url;
-    if (query.trim()) {
-      url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&language=es-ES&page=${nextPage}`;
-    } else if (selectedGenre) {
-      url = `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=es-ES&with_genres=${selectedGenre}&sort_by=popularity.desc&page=${nextPage}`;
-    } else {
-      url = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=es-ES&page=${nextPage}`;
-    }
-
+    const nextPage = pageRef.current + 1;
+    const url = await buildUrl(nextPage);
     const res = await fetch(url);
     const data = await res.json();
-    setMovies(prev => [...prev, ...(data.results || [])]);
-    setPage(nextPage);
+    const results = data.results || [];
+    if (results.length === 0) setNoMore(true);
+    pageRef.current = nextPage;
+    setMovies(prev => {
+      const existingIds = new Set(prev.map(m => m.id));
+      return dedup([...prev, ...results.filter(m => !existingIds.has(m.id))]);
+    });
     setLoading(false);
   }
 
@@ -122,7 +187,7 @@ export default function MovieList({ initialMovies, genres, initialQuery = '' }) 
 
       {mensaje && <p className={styles.mensaje}>{mensaje}</p>}
 
-      <div className={styles.grid}>
+      <div className={styles.grid} ref={gridRef}>
         {sortedMovies.map(movie => (
           <Link key={movie.id} href={`/pelicula/${movie.id}`} className={styles.cardLink}>
             <div className={styles.card}>
@@ -141,9 +206,11 @@ export default function MovieList({ initialMovies, genres, initialQuery = '' }) 
       </div>
 
       <div className={styles.loadMoreBox}>
-        <button onClick={loadMore} disabled={loading} className={loading ? styles.btnDisabled : styles.btnPrimary}>
-          {loading ? 'Cargando...' : 'Ver más'}
-        </button>
+        {!noMore && (
+          <button onClick={loadMore} disabled={loading} className={loading ? styles.btnDisabled : styles.btnPrimary}>
+            {loading ? 'Cargando...' : 'Ver más'}
+          </button>
+        )}
       </div>
     </div>
   );

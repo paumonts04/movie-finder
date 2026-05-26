@@ -82,7 +82,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1.5rem;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -152,19 +152,16 @@
 
 .genreChips {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  overflow-x: auto;
   padding-bottom: 6px;
   margin-bottom: 1rem;
-  max-width: 1200px;
+  max-width: 1600px;
   margin-left: auto;
   margin-right: auto;
-  scrollbar-width: none;
 }
 
-.genreChips::-webkit-scrollbar {
-  display: none;
-}
 
 .chip {
   flex-shrink: 0;
@@ -195,6 +192,12 @@
   cursor: pointer;
   white-space: nowrap;
   transition: background-color 0.15s ease;
+}
+
+.gridFiller {
+  background-color: #0f0f0f;
+  aspect-ratio: 2 / 3;
+  pointer-events: none;
 }
 
 .loadMoreBox {
