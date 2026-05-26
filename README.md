@@ -109,7 +109,7 @@ npm run dev
 
 ## Autor
 
-Pau — [GitHub](https://github.com/paumonts04) · [LinkedIn](https://www.linkedin.com/in/pau-montes-mondéjar-18914a408/)
+Pau Montes Mondéjar — [GitHub](https://github.com/paumonts04) · [LinkedIn](https://www.linkedin.com/in/pau-montes-mondéjar-18914a408/)
 
 ---
 
