@@ -1,6 +1,7 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { GenreProvider } from "./context/GenreContext";
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: "Buscador de Películas",
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
         <GenreProvider>
           <Navbar />
           {children}
+          <Analytics />
         </GenreProvider>
       </body>
     </html>
